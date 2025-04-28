@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from selenium_handler import fetch_completed_courses_bau
 from scheduler import get_schedule_for_student
 import mysql.connector
 import json
@@ -43,22 +42,8 @@ def index():
                 error_message = "Incorrect password."
                 return render_template("index.html", error_message=error_message)
         else:
-            result = fetch_completed_courses_bau(student_id, password)
-
-            if result["status"] == "success":
-                completed_courses = result["completed_courses"]
-                sgpa = result["sgpa"]
-                total_credits = int(result["total_credits"]) if result["total_credits"].isdigit() else 0
-
-                hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-                cursor.execute("""
-                    INSERT INTO student_cache (student_id, password_hash, completed_courses, sgpa, total_credits)
-                    VALUES (%s, %s, %s, %s, %s)
-                """, (student_id, hashed_pw, json.dumps(completed_courses), sgpa, total_credits))
-                conn.commit()
-            else:
-                error_message = result["message"]
-                return render_template("index.html", error_message=error_message)
+            error_message = "Live scraping not available. Please try again later."
+            return render_template("index.html", error_message=error_message)
 
         cursor.close()
         conn.close()
