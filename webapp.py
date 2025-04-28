@@ -8,11 +8,13 @@ app = Flask(__name__)
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
-        database='smartscheduledb',
-        user='root',
-        password='project@password123'
+        host='shuttle.proxy.rlwy.net',    # 🔥 host
+        database='railway',                # 🔥 database name
+        user='root',                       # 🔥 username
+        password='tpwBLMcDhPGJKdTYmcMrBlJnMmIOvkjy',# 🔥 copy from Railway
+        port=28919                         # 🔥 port number
     )
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
